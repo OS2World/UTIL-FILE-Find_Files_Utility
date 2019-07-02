@@ -1,0 +1,20 @@
+DEFINITION MODULE FindText;
+
+        (********************************************************)
+        (*                                                      *)
+        (*              Find text inside a file                 *)
+        (*                                                      *)
+        (*  Programmer:         P. Moylan                       *)
+        (*  Started:            3 March 2019                    *)
+        (*  Last edited:        5 March 2019                    *)
+        (*  Status:             Working                         *)
+        (*                                                      *)
+        (********************************************************)
+
+
+PROCEDURE FindInFile (filename, text: ARRAY OF CHAR): BOOLEAN;
+
+    (* Returns TRUE iff the text string occurs in the file. *)
+
+END FindText.
+

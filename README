@@ -1,0 +1,88 @@
+                       FIND FILES UTILITY
+             Peter Moylan          peter@pmoylan.org
+             ---------------------------------------
+
+The program is called "ffind" to avoid a name clash with an existing
+utility FIND.EXE.  This one is different because it allows wildcards
+in the file specification.
+
+Usage: ffind mask [text]
+where
+    mask is a filename string that may include wildcards
+    text is an optional text string to search for.  The square
+         brackets should not be included; they are there only to
+         indication that the second argument is optional.
+If either argument contains spaces then it must be delimited
+   by single or double quote marks.  Otherwise the quote marks
+   are optional.
+If the string you are searching for contains quotation marks,
+   then the delimiter has to be the other kind of quotation marks.
+   If the string contains both single and double quotation marks
+   then you are out of luck.  Sorry.  Maybe in the next version.
+
+Example 1:    ffind c:\*.prj
+Example 2:    ffind d:\dev*\*\src\progname.* 'fresh fish'
+
+The output is a list of files that satisfy the search criterion.
+
+The wildcard characters are the usual two. A '?' matches any one
+character.  A '*' matches any string of zero or more characters.
+Neither of these can match a '\' directory separator.
+
+If no drive is specified, we assume the current drive.  If the file
+specification is a relative rather than an absolute path, we
+assume that it is relative to the current working directory.
+
+We include subdirectories in the search in the following sense.
+In general the file specification is of the form
+       dirspec\filespec
+where filespec is what comes after the final '\'.  If dirspec
+contains no wildcard characters, then it is the starting directory
+for the search, and we search that directory and all
+of its subdirectories (and sub-subdirectories, etc.) for filespec,
+which of course may contain wildcard characters.
+
+If dirspec contains wildcard characters, we expand that out to
+a list of starting directories for the search, but since the
+wildcard characters cannot match a '\' we don't go any deeper in
+the directory tree than specified.  For example, if the file
+specification is
+        e:\abc\*\xyz.txt
+then we search for xyz.txt in all subdirectories of e:\abc, but
+not in the sub-subdirectories.  After much thought, I have
+decided that that is what one would intuitively expect.  The
+"include subdirectories" rule only applies to the last part of
+the file specification.
+
+If a second argument is supplied to this program, then we search all
+found files for EXACTLY the specified text.  It is not a case-independent
+search, and the text string may not contain wildcards.  Whether I
+extend this in future versions to other possibilities will depend on
+the feedback I receive.
+
+Suggestion: if your search is returning a large number of files,
+redirect the output.  For example, if
+       ffind D:\*.mod
+is returning 2005 results, as it is doing in my case, then you should
+alter this to either
+       ffind D:\*.mod >modfiles.txt
+or
+       ffind D:\*.mod | more
+
+
+Known bug: If the search specification implies a large number of
+directories, for example C:\*.txt, then the program seems to hang
+in an unkillable condition.  This appears to be exactly the same bug
+as we find in the "Seek and Scan files" utility, which is a pity because
+I wrote this program because "Seek and Scan file" was hanging on my
+searches.  (But ffind will handle a much larger set of files - see
+below.)  So far, all that I have been able to discover is that the
+problem is deep inside the OS/2 file system code.  My current
+conjecture is that the API function DosFindClose is not releasing
+file handles as it should.
+
+I have been able to solve the problem, for the searches I have done,
+by increasing the number of file handles with a DosSetRelMaxFH call.
+But this should not have worked, because I have deliberately written
+the code in a way that it never uses more than one file handle.
+
