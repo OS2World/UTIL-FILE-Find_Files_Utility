@@ -2,16 +2,17 @@
              Peter Moylan          peter@pmoylan.org
              ---------------------------------------
 
-The program is called "ffind" to avoid a name clash with an existing
-utility FIND.EXE.  This one is different because it allows wildcards
-in the file specification.
+The program is called "findr" to avoid a name clash with two existing
+utilities.  This one is different because it allows wildcards
+in the file specification and in the optional search text.
 
-Usage: ffind mask [text]
+Usage: findr mask [text]
 where
     mask is a filename string that may include wildcards
     text is an optional text string to search for.  The square
          brackets should not be included; they are there only to
          indication that the second argument is optional.
+         This argument may also contain wildcard characters.
 If either argument contains spaces then it must be delimited
    by single or double quote marks.  Otherwise the quote marks
    are optional.
@@ -20,8 +21,8 @@ If the string you are searching for contains quotation marks,
    If the string contains both single and double quotation marks
    then you are out of luck.  Sorry.  Maybe in the next version.
 
-Example 1:    ffind c:\*.prj
-Example 2:    ffind d:\dev*\*\src\progname.* 'fresh fish'
+Example 1:    findr c:\*.prj
+Example 2:    findr d:\dev*\*\src\progname.* 'fresh fish'
 
 The output is a list of files that satisfy the search criterion.
 
@@ -55,34 +56,14 @@ decided that that is what one would intuitively expect.  The
 the file specification.
 
 If a second argument is supplied to this program, then we search all
-found files for EXACTLY the specified text.  It is not a case-independent
-search, and the text string may not contain wildcards.  Whether I
-extend this in future versions to other possibilities will depend on
-the feedback I receive.
+found files for the specified text.  It is a case-independent
+search, and the text string may contain wildcards.
 
 Suggestion: if your search is returning a large number of files,
 redirect the output.  For example, if
-       ffind D:\*.mod
+       findr D:\*.mod
 is returning 2005 results, as it is doing in my case, then you should
 alter this to either
-       ffind D:\*.mod >modfiles.txt
+       findr D:\*.mod >modfiles.txt
 or
-       ffind D:\*.mod | more
-
-
-Known bug: If the search specification implies a large number of
-directories, for example C:\*.txt, then the program seems to hang
-in an unkillable condition.  This appears to be exactly the same bug
-as we find in the "Seek and Scan files" utility, which is a pity because
-I wrote this program because "Seek and Scan file" was hanging on my
-searches.  (But ffind will handle a much larger set of files - see
-below.)  So far, all that I have been able to discover is that the
-problem is deep inside the OS/2 file system code.  My current
-conjecture is that the API function DosFindClose is not releasing
-file handles as it should.
-
-I have been able to solve the problem, for the searches I have done,
-by increasing the number of file handles with a DosSetRelMaxFH call.
-But this should not have worked, because I have deliberately written
-the code in a way that it never uses more than one file handle.
-
+       findr D:\*.mod | more
