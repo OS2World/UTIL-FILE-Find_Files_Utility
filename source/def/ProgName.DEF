@@ -1,0 +1,23 @@
+DEFINITION MODULE ProgName;
+
+    (****************************************************************)
+    (*                                                              *)
+    (*       A module that lets low-level modules obtain            *)
+    (*       application-specific information.  We achieve          *)
+    (*       this by putting this module in a directory             *)
+    (*       reserved for application-specific source files,        *)
+    (*       while the library modules still live at                *)
+    (*       "library" level of the source structure.               *)
+    (*                                                              *)
+    (*    Last edited:    24 February 2019                          *)
+    (*    Status:         OK                                        *)
+    (*                                                              *)
+    (****************************************************************)
+
+
+PROCEDURE GetProgramName (VAR (*OUT*) name: ARRAY OF CHAR);
+
+    (* Returns a name and version string. *)
+
+END ProgName.
+

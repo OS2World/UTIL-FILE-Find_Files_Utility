@@ -1,17 +1,17 @@
 /*----------------------------------------------------------
-   Returns the version number of ffind.
+   Returns the version number of findr.
 
            Author:       Peter Moylan
-           Last revised: 14 April 2019
+           Last revised: 23 December 2019
 
    Usage:
            ver = version()
 
-           (Run this from the ffind top-level directory)
+           (Run this from the findr top-level directory)
 
 ------------------------------------------------------------*/
 
-DEFFile = "DEF\FFV.def"
+DEFFile = "DEF\FRV.def"
 
 DO FOREVER
     IF lines(DEFFile) != 1 THEN LEAVE

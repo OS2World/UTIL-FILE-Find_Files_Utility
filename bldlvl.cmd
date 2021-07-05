@@ -16,10 +16,10 @@ projHost = "PJM3"
 timestamp = LEFT(DATE() TIME(),25)LEFT(projHost,10)
 signature0 = "@#Peter Moylan:"ver"#@##1## "timestamp"::EN:AU:::@@"
 outfile = "level.txt"
-"DEL "outfile" 2> nul"
+"DEL "outfile" 1> nul 2> nul"
 CALL LINEOUT outfile, signature0||"File find utility for OS/2 and eCS"
 CALL STREAM outfile,'C','CLOSE'
-"@copy ffind.exe /B + level.txt ffind.exe /B >nul"
+"@copy findr.exe /B + level.txt findr.exe /B >nul"
 
 "@DEL "outfile
 
